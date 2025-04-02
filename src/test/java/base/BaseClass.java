@@ -3,6 +3,7 @@ package base;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.LoginPage;
 import pages.ProductsPage;
@@ -38,7 +39,21 @@ public class BaseClass {
 
     public void initializeDriver(){
         WebDriverManager.chromedriver().setup();
-        driver=new ChromeDriver();
+
+        //for github
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless"); // Run in headless mode
+        options.addArguments("--no-sandbox"); // Required for GitHub Actions
+        options.addArguments("--disable-dev-shm-usage"); // Avoid shared memory issues
+        options.addArguments("--disable-gpu"); // Disable GPU rendering
+        options.addArguments("--remote-allow-origins=*"); // Avoid CORS issues
+
+        driver=new ChromeDriver(options);
+        //for github
+
+        //local run
+        //driver=new ChromeDriver();
+
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
     }
